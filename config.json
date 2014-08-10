@@ -5,10 +5,6 @@
 			"consumer_secret":     "YOUR_CONSUMER_SECRET",
 			"access_token_key":    "YOUR_ACCESS_TOKEN_KEY",
 			"access_token_secret": "YOUR_ACCESS_TOKEN_SECRET"
-		},
-		"pushover": {
-			"api_token": "YOUR_APPS_API_TOKEN",
-			"user_key":  "YOUR_USER_KEY"
 		}
 	}
 }
