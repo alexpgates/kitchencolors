@@ -8,7 +8,7 @@
                 request         = require('request'),
                 entities        = require('entities'),
                 LogUtils        = require('./lib/LogUtils.js'),
-                exec            = require('exec'),
+                spawn           = require('child_process').spawn,
 
                 //the username. not set to begin with, we'll get it when authenticating
                 twitterUsername = null,
@@ -53,19 +53,29 @@
                                         var tweet_text = data.text;
                                         // remove any at mentions in the tweet
                                         var tweet_text = tweet_text.replace('#', '');
-                                        var tweet_text = tweet_text.replace('!', '');
-                                        var tweet_text = tweet_text.replace(/\B@([\w-]+)/gm, '').trim();
+                                        tweet_text = tweet_text.replace('!', '');
+                                        tweet_text = tweet_text.replace(/\B@([\w-]+)/gm, '').trim();
+
                                         // attempt to protect against attacks by whitelisting
                                         tweet_text = tweet_text.replace(/[^a-zA-Z0-9]/g, '');
-                                        exec('hue lights 5 ' + tweet_text,
-                                                function (error, stdout, stderr) {
-                                                        console.log('stdout: ' + stdout);
-                                                        console.log('stderr: ' + stderr);
-														console.log('stderr: ' + stderr);
-                                                        if (error !== null) {
-                                                                console.log('exec error: ' + error);
-                                                        }
-                                                });
+
+                                        var args = ['lights', '5'],
+                                            tweet_args = tweet.split(' ').filter(function (e) { return e.length > 0; });
+
+                                        var hue = spawn('hue',  args.concat(tweet_args)); 
+
+                                        hue.stdout.on('data', function (data) {
+                                          console.log('stdout: ' + data);
+                                        });
+
+                                        hue.stderr.on('data', function (data) {
+                                          console.log('stderr: ' + data);
+                                        });
+
+                                        hue.on('close', function (code) {
+                                          console.log('hue result: ' + code);
+                                        });
+
                                         console.log(tweet_text);
                                 }
                         }
