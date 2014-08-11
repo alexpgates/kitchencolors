@@ -55,6 +55,8 @@
                                         var tweet_text = tweet_text.replace('#', '');
                                         var tweet_text = tweet_text.replace('!', '');
                                         var tweet_text = tweet_text.replace(/\B@([\w-]+)/gm, '').trim();
+                                        // attempt to protect against attacks by whitelisting
+                                        tweet_text = tweet_text.replace(/[^a-zA-Z0-9]/g, '');
                                         exec('hue lights 5 ' + tweet_text,
                                                 function (error, stdout, stderr) {
                                                         console.log('stdout: ' + stdout);
