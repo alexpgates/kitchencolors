@@ -9,4 +9,9 @@ The vast majority of this code was forked from outadoc's <a href="https://github
 
 This is a very quick first pass and a little rough around the edges.
 
-You'll need to edit the exec() command on line 58 of bot.js to set which lights you want to control. (You'll get this after you have hue-cli up and running).
+- Create a Twitter account and grab your API keys after creating your Application on dev.twitter.com
+- Make sure Node.js is installed
+- Grab <a href="https://www.npmjs.org/package/hue-cli">hue-cli</a> and get it configured and working from your command line
+- edit the exec() command on line 58 of bot.js to set which lights you want to control. (You'll get this after you have hue-cli up and running).
+- edit config.json with your twitter keys
+- node bot.js, and give it a try!
