@@ -1,0 +1,28 @@
+{
+  "name": "kitchencolors",
+  "version": "0.0.0",
+  "description": "Kitchencolors!",
+  "main": "bot.js",
+  "dependencies": {
+    "entities": "^1.1.1",
+    "ntwitter": "^0.5.0",
+    "request": "^2.27.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexpgates/kitchencolors.git"
+  },
+  "keywords": [
+    "hue"
+  ],
+  "author": "alexpgates",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexpgates/kitchencolors/issues"
+  },
+  "homepage": "https://github.com/alexpgates/kitchencolors"
+}

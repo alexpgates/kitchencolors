@@ -3,6 +3,20 @@
 */
 
 (function() {
+
+  function find_color (string) {
+    var match;
+    match = string.match(/#[a-fA-F0-9]{6}/g);
+    if( match != null ) { return match[0].replace('#', ''); }
+    match = string.match(/#[a-fA-F0-9]{3}/g);
+    if( match != null ) { return match[0].replace('#', ''); }
+    match = string.match(/\b[a-fA-F0-9]{6}/g);
+    if( match != null ) { return match[0]; }
+    match = string.match(/\b[a-fA-F0-9]{3}/g);
+    if( match != null ) { return match[0]; }
+    return null;
+  }
+
         //the twitter api module
         var ntwitter    = require('ntwitter'),
                 request         = require('request'),
@@ -52,15 +66,24 @@
 
                                         var tweet_text = data.text;
                                         // remove any at mentions in the tweet
-                                        var tweet_text = tweet_text.replace('#', '');
-                                        tweet_text = tweet_text.replace('!', '');
                                         tweet_text = tweet_text.replace(/\B@([\w-]+)/gm, '').trim();
 
-                                        // attempt to protect against attacks by whitelisting
-                                        tweet_text = tweet_text.replace(/[^a-zA-Z0-9]/g, '');
+                                        // Look for a color!
+                                        var color = find_color(tweet_text);
+                                        if( null == color ) {
+                                          // No luck. Clean up the string and just send it all
+                                          tweet_text = tweet_text.replace('#', '');
+                                          tweet_text = tweet_text.replace('!', '');
+                                          // attempt to protect against attacks by whitelisting
+                                          tweet_text = tweet_text.replace(/[^a-zA-Z0-9]/g, '');
+                                        }
+                                        else {
+                                          console.log("Found color: #" + color);
+                                          tweet_text = color;
+                                        }
 
                                         var args = ['lights', '5'],
-                                            tweet_args = tweet.split(' ').filter(function (e) { return e.length > 0; });
+                                            tweet_args = tweet_text.split(' ').filter(function (e) { return e.length > 0; });
 
                                         var hue = spawn('hue',  args.concat(tweet_args)); 
 
