@@ -22,7 +22,7 @@
                 request         = require('request'),
                 entities        = require('entities'),
                 LogUtils        = require('./lib/LogUtils.js'),
-                exec            = require('exec'),
+                spawn           = require('child_process').spawn,
 
                 //the username. not set to begin with, we'll get it when authenticating
                 twitterUsername = null,
@@ -82,14 +82,23 @@
                                           tweet_text = color;
                                         }
 
-                                        exec('hue lights 5 ' + tweet_text,
-                                                function (error, stdout, stderr) {
-                                                        console.log('stdout: ' + stdout);
-                                                        console.log('stderr: ' + stderr);
-                                                        if (error !== null) {
-                                                                console.log('exec error: ' + error);
-                                                        }
-                                                });
+                                        var args = ['lights', '5'],
+                                            tweet_args = tweet_text.split(' ').filter(function (e) { return e.length > 0; });
+
+                                        var hue = spawn('hue',  args.concat(tweet_args)); 
+
+                                        hue.stdout.on('data', function (data) {
+                                          console.log('stdout: ' + data);
+                                        });
+
+                                        hue.stderr.on('data', function (data) {
+                                          console.log('stderr: ' + data);
+                                        });
+
+                                        hue.on('close', function (code) {
+                                          console.log('hue result: ' + code);
+                                        });
+
                                         console.log(tweet_text);
                                 }
                         }
