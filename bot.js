@@ -20,12 +20,12 @@
         //the twitter api module
         var ntwitter    = require('ntwitter'),
                 request         = require('request'),
-                entities        = require('entities'),
                 LogUtils        = require('./lib/LogUtils.js'),
-                exec            = require('exec'),
+                lights          = require('./lib/lights'),
 
                 //the username. not set to begin with, we'll get it when authenticating
                 twitterUsername = null,
+                lightsClient    = null,
 
                 //get the config (API keys, etc.)
                 config = require('./config.json'),
@@ -33,21 +33,26 @@
                 //create an object using the keys we just determined
                 twitterAPI = new ntwitter(config.keys.twitter);
 
-        //check if we have the rights to do anything
-        twitterAPI.verifyCredentials(function(error, userdata) {
-                if (error) {
-                        //if we don't, we'd better stop here anyway
-                        LogUtils.logtrace(error, LogUtils.Colors.RED);
-                        process.exit(1);
-                } else {
-                        //the credentials check returns the username, so we can store it here
-                        twitterUsername = userdata.screen_name;
-                        LogUtils.logtrace("logged in as [" + userdata.screen_name + "]", LogUtils.Colors.CYAN);
+        lights.register().then(function(client) {
+            lightsClient = client;
+            //check if we have the rights to do anything
+            twitterAPI.verifyCredentials(function(error, userdata) {
+                    if (error) {
+                            //if we don't, we'd better stop here anyway
+                            LogUtils.logtrace(error, LogUtils.Colors.RED);
+                            process.exit(1);
+                    } else {
+                            //the credentials check returns the username, so we can store it here
+                            twitterUsername = userdata.screen_name;
+                            LogUtils.logtrace("logged in as [" + userdata.screen_name + "]", LogUtils.Colors.CYAN);
 
-                        //start listening to tweets that contain the bot's username using the streaming api
-                        initStreaming();
-                }
-        });
+                            //start listening to tweets that contain the bot's username using the streaming api
+                            initStreaming();
+                    }
+            });
+          }, function(err) {
+            LogUtils.logtrace('Failed to register with lights: ' + err, LogUtils.Colors.RED);
+          });
 
         //this is called when streaming begins
         function streamCallback(stream) {
@@ -82,14 +87,12 @@
                                           tweet_text = color;
                                         }
 
-                                        exec('hue lights 5 ' + tweet_text,
-                                                function (error, stdout, stderr) {
-                                                        console.log('stdout: ' + stdout);
-                                                        console.log('stderr: ' + stderr);
-                                                        if (error !== null) {
-                                                                console.log('exec error: ' + error);
-                                                        }
-                                                });
+                                        lights.light(lightsClient, tweet_text).then(function(data) {
+                                          LogUtils.logtrace('Lit up the room: ' + data, LogUtils.Colors.GREEN);
+                                        }, function(err) {
+                                          LogUtils.logtrace('Lights error: ' + err, LogUtils.Colors.RED);
+                                        });
+
                                         console.log(tweet_text);
                                 }
                         }
