@@ -10,6 +10,7 @@
   "hue": {
     "ip": "5.5.5.5",
     "light_number": "3",
-    "app_name": "kitchenlights"
+    "app_name": "kitchenlights",
+    "user_name": "kitchenlightsuser"
   }
 }
