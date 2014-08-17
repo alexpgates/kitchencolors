@@ -1,15 +1,15 @@
 {
 	"keys": {
 		"twitter": {
-			"consumer_key":        "YOUR_CONSUMER_TOKEN",
-			"consumer_secret":     "YOUR_CONSUMER_SECRET",
-			"access_token_key":    "YOUR_ACCESS_TOKEN_KEY",
-			"access_token_secret": "YOUR_ACCESS_TOKEN_SECRET"
+			"consumer_key":        "ISNJcUi86UXd6joBKBu3iItg2",
+			"consumer_secret":     "CnZGgmSqaQ4tCwVvj1prMDRWY4gXWjX5rXDYTcpTY8WsB9p0ug",
+			"access_token_key":    "2721788576-yRLMoFoPLUi3eLRL4infbdKoFs6AI2HfzfK9Xyi",
+			"access_token_secret": "eQpnUfpgvVnsUx1CTCd7BOQw68OovvDHMlcxpzJHWxT13"
 		}
 	},
   "hue": {
-    "ip": "5.5.5.5",
-    "light_number": "3",
+    "ip": "10.0.1.2",
+    "light_number": "5",
     "app_name": "kitchenlights",
     "user_name": "kitchenlightsuser"
   }
