@@ -4,13 +4,20 @@
   "description": "Kitchencolors!",
   "main": "bot.js",
   "dependencies": {
+    "css-color-names": "0.0.1",
     "entities": "^1.1.1",
+    "hue.js": "^0.2.13",
     "ntwitter": "^0.5.0",
+    "q": "^1.0.1",
     "request": "^2.27.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.21.4",
+    "proxyquire": "^1.0.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha test"
   },
   "repository": {
     "type": "git",
